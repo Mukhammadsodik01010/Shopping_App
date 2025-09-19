@@ -1,5 +1,5 @@
 class CollectionNames {
-    static USERS = "user"
+    static USER = "user"
     static SAVE_FILE = "save_file"
 }
 
