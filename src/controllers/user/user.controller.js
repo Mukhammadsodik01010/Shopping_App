@@ -31,7 +31,7 @@ class UserController {
 
     return res
       .status(StatusCodes.OK)
-      .json({ success: true, message: "User Created", user });
+      .json({ success: true, message: "User Created Successfully" });
   };
 
   static SignIn = async (req, res) => {
@@ -47,13 +47,9 @@ class UserController {
       throw new HttpException(StatusCodes.CONFLICT, "Wrong email or password");
     }
 
-    const token = await jwt.sign(
-      { user_id: existingUser.user_id },
-      JWT_SECRET,
-      {
-        expiresIn: "24h",
-      }
-    );
+    const token = await jwt.sign({ user_id: existingUser._id }, JWT_SECRET, {
+      expiresIn: "24h",
+    });
 
     return res
       .status(StatusCodes.OK)
