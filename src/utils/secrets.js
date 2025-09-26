@@ -11,6 +11,10 @@ const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
 const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
 const AWS_URL = process.env.AWS_URL;
 const AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME;
+const EMAIL_USER = process.env.EMAIL_USER;
+const EMAIL_PASS = process.env.EMAIL_PASS;
+const EMAIL_HOST = process.env.EMAIL_HOST;
+const EMAIL_PORT = process.env.EMAIL_PORT;
 
 module.exports = {
   PORT,
@@ -23,4 +27,8 @@ module.exports = {
   AWS_SECRET_ACCESS_KEY,
   AWS_URL,
   AWS_BUCKET_NAME,
+  EMAIL_HOST,
+  EMAIL_PASS,
+  EMAIL_PORT,
+  EMAIL_USER,
 };

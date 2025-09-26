@@ -20,4 +20,23 @@ User_Router.post(
 );
 User_Router.get("/get-me", AuthMiddleware, UserController.GetMe);
 
+User_Router.post(
+  "/forget-password",
+  UserValidator.ForgetPassword(),
+  expressValidator,
+  UserController.ForgetPassword
+);
+User_Router.post(
+  "/verify-code",
+  UserValidator.VerifyCode(),
+  expressValidator,
+  UserController.VerifyCode
+);
+User_Router.post(
+  "/reset-password",
+  UserValidator.ResetPassword(),
+  expressValidator,
+  UserController.ResetPassword
+);
+
 module.exports = User_Router;

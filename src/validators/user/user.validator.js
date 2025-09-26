@@ -34,6 +34,43 @@ class UserValidator {
       .notEmpty()
       .isString(),
   ];
+
+  static ForgetPassword = () => [
+    body("email", "Email is required and must be valid email")
+      .notEmpty()
+      .isEmail(),
+  ];
+
+  static VerifyCode = () => [
+    body("email", "Email is required and must be valid email")
+      .notEmpty()
+      .isEmail(),
+    body(
+      "verification_code",
+      "verification code is required and must be string"
+    )
+      .notEmpty()
+      .isString(),
+  ];
+
+  static ResetPassword = () => [
+    body("email", "Email is required and must valid email")
+      .notEmpty()
+      .isEmail(),
+    body("password", "Password is required and must be string")
+      .notEmpty()
+      .isString(),
+    body(
+      "password",
+      "Password must be at least 8 characters and contain at least one uppercase, one lovercase and one number. But no special characters"
+    ).isStrongPassword({
+      minLength: 8,
+      minLowercase: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+      minSymbols: 0,
+    }),
+  ];
 }
 
 module.exports = { UserValidator };

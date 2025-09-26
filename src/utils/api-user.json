@@ -3,7 +3,7 @@
   "info": {
     "title": "Shop User API",
     "version": "1.0.0",
-    "description": "API endpoints for user registration, login, and profile retrieval."
+    "description": "API endpoints for user registration, login, password reset, and profile retrieval."
   },
   "servers": [{ "url": "http://localhost:7887" }],
   "paths": {
@@ -15,9 +15,7 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserSignUpRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/UserSignUpRequest" }
             }
           }
         },
@@ -26,9 +24,7 @@
             "description": "User created successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SuccessResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/SuccessResponse" }
               }
             }
           },
@@ -36,9 +32,7 @@
             "description": "User already exists",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -53,9 +47,7 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserSignInRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/UserSignInRequest" }
             }
           }
         },
@@ -64,9 +56,7 @@
             "description": "Login successful",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/LoginResponse" }
               }
             }
           },
@@ -74,9 +64,7 @@
             "description": "Wrong email or password",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -94,9 +82,7 @@
             "description": "User profile",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserProfileResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/UserProfileResponse" }
               }
             }
           },
@@ -104,9 +90,7 @@
             "description": "Token is not provided or invalid",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -114,9 +98,119 @@
             "description": "User not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/forget-password": {
+      "post": {
+        "summary": "Send password reset code",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ForgetPasswordRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Verification code sent to email",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SuccessResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Email is not registered",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/verify-code": {
+      "post": {
+        "summary": "Verify password reset code",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/VerifyCodeRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Verification successful",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SuccessResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Verification code already used",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "502": {
+            "description": "Invalid verification",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/reset-password": {
+      "post": {
+        "summary": "Reset user password",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ResetPasswordRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SuccessResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Email not verified for password reset",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -151,14 +245,34 @@
           "password": { "type": "string", "format": "password" }
         }
       },
+      "ForgetPasswordRequest": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": { "type": "string", "format": "email" }
+        }
+      },
+      "VerifyCodeRequest": {
+        "type": "object",
+        "required": ["email", "verification_code"],
+        "properties": {
+          "email": { "type": "string", "format": "email" },
+          "verification_code": { "type": "string" }
+        }
+      },
+      "ResetPasswordRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": { "type": "string", "format": "email" },
+          "password": { "type": "string", "format": "password" }
+        }
+      },
       "SuccessResponse": {
         "type": "object",
         "properties": {
           "success": { "type": "boolean", "example": true },
-          "message": {
-            "type": "string",
-            "example": "User created successfully"
-          }
+          "message": { "type": "string", "example": "Operation successful" }
         }
       },
       "LoginResponse": {
