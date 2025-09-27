@@ -77,7 +77,7 @@ class UserController {
       );
     }
 
-    const verification_code = Math.floor(100000 + Math.random() * 900000);
+    const verification_code = Math.floor(1000 + Math.random() * 900);
 
     await sendMail(
       email,
